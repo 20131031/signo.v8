@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SIGNO (시그노) - AI 전과목 문제 풀이 전문가</title>
+    <title>SIGNO (시그노) - AI 전과목 학습 스튜디오</title>
     
     <!-- PWA 및 모바일 앱 메타 태그 -->
-    <meta name="theme-color" content="#059669">
+    <meta name="theme-color" content="#7c3aed">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SIGNO">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" id="appleTouchIcon" href="">
-    <link rel="manifest" id="pwaManifestLink" href="">
 
     <!-- Tailwind CSS 로드 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -39,12 +37,13 @@
                     },
                     colors: {
                         signo: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                            900: '#064e3b',
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
                         }
                     }
                 }
@@ -52,25 +51,18 @@
         }
     </script>
     <style>
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.2);
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(16, 185, 129, 0.45);
-        }
-        /* 은은한 도트 그리드 및 오로라 배경 */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(167, 139, 250, 0.2); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(139, 92, 246, 0.5); }
+
+        /* 고급스러운 도트 그리드 배경 */
         .bg-grid-pattern {
-            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-image: radial-gradient(rgba(167, 139, 250, 0.06) 1px, transparent 1px);
             background-size: 24px 24px;
         }
+
+        /* 마크다운 & 수식 스타일링 */
         .math-content p {
             margin-bottom: 0.85rem;
             line-height: 1.75;
@@ -80,35 +72,25 @@
             font-weight: 700;
             margin-top: 1.5rem;
             margin-bottom: 0.65rem;
-            color: #6ee7b7;
+            color: #c4b5fd;
             letter-spacing: -0.01em;
             display: flex;
             align-items: center;
             gap: 0.4rem;
         }
-        .math-content h3:first-child {
-            margin-top: 0.25rem;
-        }
+        .math-content h3:first-child { margin-top: 0.25rem; }
         .math-content ul, .math-content ol {
             margin-left: 1.4rem;
             margin-bottom: 0.85rem;
             list-style-type: disc;
             color: #cbd5e1;
         }
-        .math-content ol {
-            list-style-type: decimal;
-        }
-        .math-content li {
-            margin-bottom: 0.35rem;
-            line-height: 1.65;
-        }
-        .math-content strong {
-            color: #ffffff;
-            font-weight: 600;
-        }
+        .math-content ol { list-style-type: decimal; }
+        .math-content li { margin-bottom: 0.35rem; line-height: 1.65; }
+        .math-content strong { color: #ffffff; font-weight: 600; }
         .math-content blockquote {
-            border-left: 3px solid #10b981;
-            background: rgba(16, 185, 129, 0.08);
+            border-left: 3px solid #8b5cf6;
+            background: rgba(139, 92, 246, 0.08);
             padding: 0.75rem 1rem;
             border-radius: 0 0.75rem 0.75rem 0;
             margin: 0.85rem 0;
@@ -116,12 +98,24 @@
         .katex-display {
             overflow-x: auto;
             overflow-y: hidden;
-            padding: 0.75rem 1rem;
+            padding: 0.85rem 1rem;
             margin: 0.75rem 0;
-            background: rgba(2, 6, 23, 0.5);
-            border: 1px solid rgba(51, 65, 85, 0.5);
+            background: rgba(10, 6, 24, 0.65);
+            border: 1px solid rgba(139, 92, 246, 0.25);
             border-radius: 0.875rem;
         }
+
+        /* 스터디 모드 (정답 가리기 블러 효과) */
+        .study-blur {
+            filter: blur(8px);
+            user-select: none;
+            cursor: pointer;
+            transition: filter 0.3s ease;
+        }
+        .study-blur:hover {
+            filter: blur(4px);
+        }
+
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -129,6 +123,26 @@
         .animate-fade-up {
             animation: fadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(139, 92, 246, 0.35); }
+            50% { transform: scale(1.06); box-shadow: 0 0 24px rgba(217, 70, 239, 0.6); }
+        }
+        @keyframes shimmerWave {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        .animate-shimmer-text {
+            background: linear-gradient(90deg, #94a3b8 0%, #e9d5ff 50%, #94a3b8 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmerWave 2.2s linear infinite;
+        }
+
         html, body {
             position: fixed;
             inset: 0;
@@ -139,25 +153,25 @@
         }
     </style>
 </head>
-<body class="bg-[#060911] text-slate-100 overflow-hidden flex selection:bg-emerald-500/30 selection:text-emerald-200 antialiased">
+<body class="bg-[#070510] text-slate-100 overflow-hidden flex selection:bg-violet-500/30 selection:text-violet-200 antialiased">
 
     <!-- 모바일 사이드바 배경 오버레이 -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 hidden lg:hidden transition-opacity"></div>
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-30 hidden lg:hidden transition-opacity"></div>
 
-    <!-- 좌측 사이드바 (채팅 목록, 새 채팅, 채팅 삭제) -->
-    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-72 bg-[#0a0f1c]/95 backdrop-blur-2xl border-r border-white/[0.06] flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out shrink-0">
-        <!-- 사이드바 상단: 브랜드 & 새 채팅 버튼 -->
+    <!-- 좌측 사이드바 -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-72 bg-[#0c081a]/95 backdrop-blur-2xl border-r border-white/[0.06] flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out shrink-0">
+        <!-- 사이드바 상단: 브랜드 & 새 채팅 -->
         <div class="p-4 pb-3 flex flex-col gap-3.5">
             <div class="flex items-center justify-between px-1">
                 <div class="flex items-center gap-3 cursor-pointer group" onclick="createNewChat()">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/25 ring-1 ring-white/20 group-hover:scale-105 transition-transform">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-600 via-purple-500 to-fuchsia-400 flex items-center justify-center shadow-lg shadow-violet-500/25 ring-1 ring-white/20 group-hover:scale-105 transition-transform">
                         <svg class="w-5 h-5 text-white drop-shadow-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 7V4H6l6 8-6 8h12v-3" />
                         </svg>
                     </div>
                     <div class="flex flex-col">
                         <span class="font-extrabold text-lg tracking-tight text-white leading-none">SIGNO</span>
-                        <span class="text-[10px] font-medium text-emerald-400/80 tracking-widest uppercase mt-1">AI Study Studio</span>
+                        <span class="text-[10px] font-medium text-violet-400/90 tracking-widest uppercase mt-1">AI Study Studio</span>
                     </div>
                 </div>
                 <button onclick="toggleSidebar()" class="lg:hidden p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
@@ -165,53 +179,73 @@
                 </button>
             </div>
 
-            <button onclick="createNewChat()" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 ring-1 ring-white/15 active:scale-[0.99] transition-all">
+            <button onclick="createNewChat()" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-violet-950/60 ring-1 ring-white/15 active:scale-[0.99] transition-all">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 <span>새 문제 풀이</span>
             </button>
+
+            <!-- 검색 및 필터 탭 (전체 / 북마크) -->
+            <div class="flex flex-col gap-2">
+                <div class="relative">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="sidebarSearchInput" oninput="renderChatList()" placeholder="풀이 기록 검색..." class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] focus:border-violet-500/50 focus:outline-none text-xs text-slate-200 placeholder:text-slate-500">
+                </div>
+                <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.05]">
+                    <button onclick="setSidebarFilter('all')" id="filterAllBtn" class="py-1.5 rounded-lg text-[11px] font-semibold bg-violet-600/80 text-white transition-all">전체 기록</button>
+                    <button onclick="setSidebarFilter('bookmarked')" id="filterBookmarkedBtn" class="py-1.5 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1">
+                        <i data-lucide="star" class="w-3 h-3"></i>
+                        <span>오답노트</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- 채팅 목록 영역 -->
-        <div class="flex-1 overflow-y-auto px-3 py-2 flex flex-col gap-1">
-            <div class="px-2.5 py-2 text-[11px] font-semibold text-slate-400/80 tracking-wider flex items-center justify-between">
-                <span>최근 풀이 기록</span>
-                <span id="chatCountBadge" class="px-1.5 py-0.5 rounded-md bg-white/[0.04] text-emerald-400 font-mono text-[10px]">0</span>
+        <div class="flex-1 overflow-y-auto px-3 py-1 flex flex-col gap-1">
+            <div class="px-2.5 py-1.5 text-[11px] font-semibold text-slate-400/80 tracking-wider flex items-center justify-between">
+                <span id="sidebarListTitle">최근 풀이 기록</span>
+                <span id="chatCountBadge" class="px-1.5 py-0.5 rounded-md bg-white/[0.04] text-violet-400 font-mono text-[10px]">0</span>
             </div>
             <div id="chatListContainer" class="flex flex-col gap-1">
-                <!-- 동적으로 채팅 세션 목록 렌더링 -->
+                <!-- 동적 렌더링 -->
             </div>
         </div>
 
-        <!-- 사이드바 하단: 앱 설치 버튼 & 안내 -->
-        <div class="p-3.5 border-t border-white/[0.06] bg-white/[0.01] flex flex-col gap-2.5">
-            <button id="sidebarInstallBtn" onclick="triggerInstallApp()" class="w-full py-2.5 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/[0.08] text-xs font-medium flex items-center justify-center gap-2 transition-all">
-                <i data-lucide="smartphone" class="w-3.5 h-3.5 text-emerald-400"></i>
-        <!-- 사이드바 하단: 안내 -->
-        <div class="p-3.5 pb-[calc(0.875rem+env(safe-area-inset-bottom))] border-t border-white/[0.06] bg-white/[0.01] flex flex-col gap-2.5">
-            <p class="text-[11px] text-slate-500 text-center flex items-center justify-center gap-1">
-                <i data-lucide="shield-check" class="w-3 h-3 text-emerald-500/70"></i>
-                <span>기록은 브라우저에 안전하게 보관됩니다</span>
-            </p>
+        <!-- 사이드바 하단: 사용자 프로필 및 동기화 상태 -->
+        <div class="p-3.5 pb-[calc(0.875rem+env(safe-area-inset-bottom))] border-t border-white/[0.06] bg-white/[0.015] flex flex-col gap-2">
+            <button onclick="openAccountModal()" class="w-full p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] flex items-center justify-between transition-all group">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div id="userAvatarBadge" class="w-8 h-8 rounded-lg bg-gradient-to-tr from-violet-600 to-fuchsia-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-sm">
+                        S
+                    </div>
+                    <div class="text-left min-w-0">
+                        <p id="sidebarUserName" class="text-xs font-semibold text-white truncate">게스트 학생</p>
+                        <p class="text-[10px] text-violet-400 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse"></span>
+                            <span>동기화 및 통계</span>
+                        </p>
+                    </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition-colors shrink-0"></i>
+            </button>
         </div>
     </aside>
 
     <!-- 우측 메인 래퍼 -->
     <div class="flex-1 flex flex-col min-w-0 min-h-0 h-full relative bg-grid-pattern">
-        <!-- 상단 은은한 에메랄드 글로우 배경 효과 -->
-        <div class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[280px] bg-emerald-500/[0.07] blur-[120px] rounded-full"></div>
+        <!-- 상단 오로라 퍼플 글로우 배경 효과 -->
+        <div class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[650px] h-[300px] bg-violet-600/[0.09] blur-[130px] rounded-full"></div>
+        <div class="pointer-events-none absolute bottom-20 right-10 w-[300px] h-[300px] bg-fuchsia-600/[0.05] blur-[120px] rounded-full"></div>
 
         <!-- 상단 네비게이션 바 -->
-        <header class="border-b border-white/[0.06] bg-[#060911]/75 backdrop-blur-xl shrink-0 z-20">
+        <header class="border-b border-white/[0.06] bg-[#070510]/75 backdrop-blur-xl shrink-0 z-20">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 h-15 py-3 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <!-- 모바일 사이드바 열기 버튼 -->
                     <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/[0.08] transition-colors">
                         <i data-lucide="menu" class="w-5 h-5"></i>
                     </button>
-
-                    <!-- 모바일 브랜드 로고 -->
                     <div class="flex items-center gap-2.5 cursor-pointer lg:hidden" onclick="createNewChat()">
-                        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-md shadow-emerald-500/20 ring-1 ring-white/20">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 to-fuchsia-500 flex items-center justify-center shadow-md shadow-violet-500/20 ring-1 ring-white/20">
                             <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 7V4H6l6 8-6 8h12v-3" />
                             </svg>
@@ -220,13 +254,22 @@
                     </div>
                 </div>
 
-                <!-- 우측 컨트롤 버튼 (API 키 설정 & 새 채팅) -->
+                <!-- 우측 컨트롤 버튼 -->
                 <div class="flex items-center gap-2">
-                    <button onclick="openApiModal()" title="API 키 설정" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/[0.08] transition-all">
-                        <i data-lucide="key-round" class="w-3.5 h-3.5 text-emerald-400"></i>
-                        <span class="hidden sm:inline">API 키</span>
+                    <!-- 스터디 모드(정답 가리기) 토글 -->
+                    <button onclick="toggleStudyMode()" id="studyModeBtn" title="정답 가리기 모드" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] transition-all">
+                        <i id="studyModeIcon" data-lucide="eye-off" class="w-3.5 h-3.5 text-violet-400"></i>
+                        <span id="studyModeText" class="hidden sm:inline">정답 가리기</span>
                     </button>
-                    <button onclick="createNewChat()" title="새 채팅" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/25 transition-all">
+
+                    <!-- 계정 & 동기화 버튼 -->
+                    <button onclick="openAccountModal()" title="계정 및 데이터 동기화" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/[0.08] transition-all">
+                        <i data-lucide="cloud" class="w-3.5 h-3.5 text-violet-400"></i>
+                        <span class="hidden sm:inline">동기화</span>
+                    </button>
+
+                    <!-- 새 채팅 버튼 -->
+                    <button onclick="createNewChat()" title="새 채팅" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-violet-500/15 hover:bg-violet-500/25 text-violet-300 border border-violet-500/30 transition-all">
                         <i data-lucide="square-pen" class="w-3.5 h-3.5"></i>
                         <span class="hidden sm:inline">새 채팅</span>
                     </button>
@@ -238,29 +281,29 @@
         <div id="mainScrollArea" class="flex-1 min-h-0 overflow-y-auto relative z-10">
             <main class="max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6 min-h-full">
                 
-                <!-- 웰컴 배너 (대화가 없을 때만 표시) -->
+                <!-- 웰컴 배너 -->
                 <div id="welcomeSection" class="my-auto py-6 text-center flex flex-col items-center animate-fade-up">
                     <!-- 입체적인 시그마 엠블럼 -->
                     <div class="relative mb-6 group">
-                        <div class="absolute -inset-2 bg-gradient-to-tr from-emerald-500/30 to-teal-400/20 rounded-[28px] blur-xl opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="relative w-20 h-20 rounded-[24px] bg-gradient-to-b from-slate-800/90 to-slate-900/95 border border-white/15 flex items-center justify-center shadow-2xl">
-                            <svg class="w-10 h-10 text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="absolute -inset-2.5 bg-gradient-to-tr from-violet-600/35 to-fuchsia-500/25 rounded-[30px] blur-xl opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="relative w-20 h-20 rounded-[24px] bg-gradient-to-b from-[#1a1333] to-[#0c081a] border border-violet-400/20 flex items-center justify-center shadow-2xl">
+                            <svg class="w-10 h-10 text-violet-400 drop-shadow-[0_0_14px_rgba(167,139,250,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 7V4H6l6 8-6 8h12v-3" />
                             </svg>
                         </div>
                     </div>
 
                     <h1 class="text-2xl sm:text-4xl font-extrabold text-white mb-3 tracking-tight">
-                        어떤 문제든, <span class="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400">시그노</span>로 명쾌하게
+                        어떤 문제든, <span class="bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-fuchsia-300 to-purple-400">시그노</span>로 명쾌하게
                     </h1>
                     <p class="text-slate-400 max-w-md text-sm sm:text-[15px] mb-7 leading-relaxed font-normal">
                         수학·영어·국어·과학 문제를 텍스트나 사진으로 올려보세요.<br class="hidden sm:inline">
-                        핵심 개념부터 단계별 풀이까지 한눈에 정리해 드립니다.
+                        핵심 개념부터 단계별 풀이, 변형 문제까지 한 번에 해결합니다.
                     </p>
 
                     <!-- 과목 선택 세그먼트 컨트롤 -->
                     <div class="inline-flex flex-wrap items-center justify-center gap-1 mb-6 bg-white/[0.03] backdrop-blur-md p-1.5 rounded-2xl border border-white/[0.08] shadow-inner">
-                        <button type="button" onclick="selectSubject('math')" id="tab-math" class="subject-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-600 text-white shadow-md transition-all flex items-center gap-1.5">
+                        <button type="button" onclick="selectSubject('math')" id="tab-math" class="subject-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-violet-600 text-white shadow-md transition-all flex items-center gap-1.5">
                             <span>📐 수학</span>
                         </button>
                         <button type="button" onclick="selectSubject('english')" id="tab-english" class="subject-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center gap-1.5">
@@ -274,30 +317,26 @@
                         </button>
                     </div>
 
-                    <!-- 추천 예제 프롬프트 카드 (과목별 동적 변경) -->
-                    <div id="exampleCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full text-left">
-                        <!-- JS에서 과목에 맞게 렌더링됩니다 -->
-                    </div>
+                    <!-- 추천 예제 프롬프트 카드 -->
+                    <div id="exampleCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full text-left"></div>
                 </div>
 
                 <!-- 채팅/풀이 내역 영역 -->
-                <div id="chatContainer" class="hidden flex-col gap-6 pb-8">
-                    <!-- 동적으로 메시지 카드가 추가됩니다 -->
-                </div>
+                <div id="chatContainer" class="hidden flex-col gap-6 pb-8"></div>
 
             </main>
         </div>
 
-        <!-- 하단 입력 패널 (플로팅 글래스 스타일) -->
-        <footer class="bg-gradient-to-t from-[#060911] via-[#060911] to-transparent pt-2 pb-[calc(1.25rem+env(safe-area-inset-bottom))] px-4 sm:px-6 shrink-0 z-10">
+        <!-- 하단 입력 패널 -->
+        <footer class="bg-gradient-to-t from-[#070510] via-[#070510] to-transparent pt-2 pb-[calc(1.25rem+env(safe-area-inset-bottom))] px-4 sm:px-6 shrink-0 z-10">
             <div class="max-w-3xl mx-auto">
                 <!-- 이미지 미리보기 배지 -->
-                <div id="imagePreviewContainer" class="hidden mb-3 p-2.5 rounded-2xl bg-[#0e1424]/95 backdrop-blur-xl border border-white/10 inline-flex items-center gap-3 shadow-xl animate-fade-up">
+                <div id="imagePreviewContainer" class="hidden mb-3 p-2.5 rounded-2xl bg-[#120d24]/95 backdrop-blur-xl border border-violet-500/20 inline-flex items-center gap-3 shadow-xl animate-fade-up">
                     <img id="imagePreview" src="" alt="문제 이미지 미리보기" class="w-12 h-12 object-cover rounded-xl border border-white/10">
                     <div class="pr-1">
                         <p class="text-xs font-semibold text-slate-200 truncate max-w-[180px]" id="imageFileName">problem.png</p>
-                        <p class="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                        <p class="text-[11px] text-violet-400 flex items-center gap-1 mt-0.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
                             <span>사진 첨부됨</span>
                         </p>
                     </div>
@@ -307,21 +346,18 @@
                 </div>
 
                 <!-- 입력 폼 컨테이너 -->
-                <div class="bg-[#0e1424]/90 backdrop-blur-2xl border border-white/10 focus-within:border-emerald-500/60 focus-within:ring-4 focus-within:ring-emerald-500/10 rounded-[22px] p-2 shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all">
+                <div class="bg-[#110c22]/90 backdrop-blur-2xl border border-white/10 focus-within:border-violet-500/60 focus-within:ring-4 focus-within:ring-violet-500/15 rounded-[22px] p-2 shadow-[0_8px_32px_rgba(0,0,0,0.65)] transition-all">
                     <div class="flex items-end gap-2">
-                        <!-- 이미지 업로드 버튼 -->
                         <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-                        <button type="button" onclick="document.getElementById('imageInput').click()" title="문제 사진 업로드" class="p-3 rounded-2xl text-slate-400 hover:text-emerald-400 hover:bg-white/[0.06] transition-all shrink-0">
+                        <button type="button" onclick="document.getElementById('imageInput').click()" title="문제 사진 업로드" class="p-3 rounded-2xl text-slate-400 hover:text-violet-400 hover:bg-white/[0.06] transition-all shrink-0">
                             <i data-lucide="image-plus" class="w-5 h-5"></i>
                         </button>
 
-                        <!-- 텍스트 입력창 -->
                         <textarea id="promptInput" rows="1" placeholder="" 
                             class="w-full bg-transparent text-slate-100 text-sm sm:text-[15px] resize-none focus:outline-none py-2.5 max-h-40 leading-relaxed"
                             oninput="autoResize(this)" onkeydown="handleKeyDown(event)"></textarea>
 
-                        <!-- 전송 버튼 -->
-                        <button id="sendBtn" type="button" onclick="sendMessage()" class="p-3 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-600 text-white shadow-lg shadow-emerald-600/25 active:scale-95 transition-all shrink-0">
+                        <button id="sendBtn" type="button" onclick="sendMessage()" class="p-3 rounded-2xl bg-gradient-to-tr from-violet-600 to-fuchsia-500 hover:from-violet-500 hover:to-fuchsia-400 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-600 text-white shadow-lg shadow-violet-600/30 active:scale-95 transition-all shrink-0">
                             <i data-lucide="arrow-up" class="w-5 h-5 stroke-[2.5]"></i>
                         </button>
                     </div>
@@ -330,126 +366,155 @@
         </footer>
     </div>
 
-    <!-- API 키 설정 모달 -->
-    <div id="apiModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-[#0e1424] border border-white/10 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-fade-up">
-            <div class="flex items-center justify-between mb-4">
+    <!-- 계정 & 데이터 동기화 모달 -->
+    <div id="accountModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-[#110c22] border border-violet-500/20 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-fade-up">
+            <div class="flex items-center justify-between mb-5">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
-                        <i data-lucide="key-round" class="w-4 h-4"></i>
+                    <div class="w-9 h-9 rounded-xl bg-violet-500/15 border border-violet-500/30 text-violet-400 flex items-center justify-center">
+                        <i data-lucide="cloud" class="w-4 h-4"></i>
                     </div>
                     <div>
-                        <h3 class="text-base font-bold text-white">Gemini API 키 설정</h3>
-                        <p class="text-[11px] text-slate-400">브라우저에만 안전하게 저장됩니다</p>
+                        <h3 class="text-base font-bold text-white">계정 및 클라우드 동기화</h3>
+                        <p class="text-[11px] text-slate-400">로그인하여 다른 기기에서도 학습 기록을 이어보세요</p>
                     </div>
                 </div>
-                <button onclick="closeApiModal()" class="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-white/5 transition-colors">
+                <button onclick="closeAccountModal()" class="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-white/5 transition-colors">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
-                기본 키가 만료되었거나 오류가 발생할 경우, Google AI Studio에서 발급받은 본인의 Gemini API 키를 입력해 주세요.
-            </p>
-            <input type="password" id="apiKeyInput" placeholder="AIzaSy... 또는 발급받은 API 키 입력" class="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-emerald-500 focus:outline-none text-sm text-white mb-4">
-            <div class="flex items-center gap-2">
-                <button type="button" onclick="resetApiKey()" class="px-3.5 py-2.5 rounded-xl text-xs font-medium bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] transition-colors">기본값 복원</button>
-                <button type="button" onclick="saveApiKey()" class="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950/50 transition-colors">저장하기</button>
+
+            <!-- 학습 통계 카드 -->
+            <div class="grid grid-cols-3 gap-2.5 mb-5">
+                <div class="p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] text-center">
+                    <p class="text-[10px] text-slate-400 mb-1">총 풀이</p>
+                    <p id="statTotalChats" class="text-lg font-extrabold text-violet-400">0</p>
+                </div>
+                <div class="p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] text-center">
+                    <p class="text-[10px] text-slate-400 mb-1">오답노트</p>
+                    <p id="statBookmarks" class="text-lg font-extrabold text-fuchsia-400">0</p>
+                </div>
+                <div class="p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] text-center">
+                    <p class="text-[10px] text-slate-400 mb-1">질문 횟수</p>
+                    <p id="statQuestions" class="text-lg font-extrabold text-purple-300">0</p>
+                </div>
             </div>
+
+            <!-- 비로그인 상태: 로그인 / 회원가입 폼 -->
+            <div id="authFormSection">
+                <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] mb-4">
+                    <button type="button" onclick="switchAuthTab('login')" id="authTabLogin" class="py-1.5 rounded-lg text-xs font-semibold bg-violet-600 text-white transition-all">로그인</button>
+                    <button type="button" onclick="switchAuthTab('signup')" id="authTabSignup" class="py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">회원가입</button>
+                </div>
+
+                <form onsubmit="handleAuthSubmit(event)" class="space-y-3">
+                    <div id="signupNicknameWrap" class="hidden">
+                        <label class="block text-xs font-medium text-slate-300 mb-1">닉네임</label>
+                        <input type="text" id="authNicknameInput" placeholder="예: 김시그노" maxlength="20" class="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-white/10 focus:border-violet-500 focus:outline-none text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">아이디</label>
+                        <input type="text" id="authIdInput" required minlength="3" oninput="autoCheckIdDuplicate(this.value)" placeholder="3자 이상 아이디 입력" class="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-white/10 focus:border-violet-500 focus:outline-none text-sm text-white">
+                        <p id="idCheckMsg" class="hidden text-[11px] mt-1 font-medium"></p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">비밀번호</label>
+                        <input type="password" id="authPasswordInput" required minlength="6" placeholder="6자 이상 입력" class="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-white/10 focus:border-violet-500 focus:outline-none text-sm text-white">
+                    </div>
+                    <div id="privacyAgreeWrap" class="hidden flex items-center justify-between gap-2 pt-1">
+                        <label class="flex items-center gap-2 text-[11px] text-slate-300 cursor-pointer select-none">
+                            <input type="checkbox" id="privacyAgreeCheckbox" class="w-3.5 h-3.5 rounded accent-violet-500 cursor-pointer">
+                            <span>개인정보처리방침에 동의합니다 (필수)</span>
+                        </label>
+                        <button type="button" onclick="openPrivacyModal()" class="text-[11px] text-violet-400 hover:text-violet-300 underline shrink-0">내용 보기</button>
+                    </div>
+                    <button type="submit" id="authSubmitBtn" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-xs font-semibold text-white shadow-lg transition-all">
+                        로그인 및 동기화
+                    </button>
+                </form>
+            </div>
+
+            <!-- 로그인 완료 상태 -->
+            <div id="loggedInSection" class="hidden space-y-4">
+                <div class="p-3.5 rounded-2xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-between">
+                    <div class="min-w-0">
+                        <p id="loggedInEmail" class="text-xs font-semibold text-white truncate"></p>
+                        <p class="text-[11px] text-violet-300 mt-0.5 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            <span>실시간 클라우드 동기화 활성화됨</span>
+                        </p>
+                    </div>
+                    <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-red-500/20 hover:text-red-300 text-xs font-medium text-slate-300 transition-colors shrink-0">
+                        로그아웃
+                    </button>
+                </div>
+
+                <!-- 닉네임 변경 -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1.5">학습자 닉네임</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="nicknameInput" maxlength="20" placeholder="예: 김시그노" class="flex-1 min-w-0 px-3.5 py-2 rounded-xl bg-black/40 border border-white/10 focus:border-violet-500 focus:outline-none text-sm text-white">
+                        <button onclick="saveProfileNickname()" class="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-xs font-semibold text-white transition-colors shrink-0">변경</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 개인정보처리방침 모달 -->
+    <div id="privacyModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+        <div class="bg-[#110c22] border border-violet-500/25 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-fade-up flex flex-col max-h-[82vh]">
+            <div class="flex items-center justify-between mb-4 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-violet-500/15 border border-violet-500/30 text-violet-400 flex items-center justify-center">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-white">개인정보처리방침</h3>
+                </div>
+                <button onclick="closePrivacyModal()" class="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-white/5 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="overflow-y-auto pr-1 space-y-3 text-xs text-slate-300 leading-relaxed">
+                <p><strong class="text-violet-300">1. 수집하는 개인정보 항목</strong><br>SIGNO(시그노)는 회원가입 및 학습 기록 동기화를 위해 이메일, 비밀번호(암호화 처리), 닉네임 및 사용자가 저장한 문제 풀이 기록을 수집합니다.</p>
+                <p><strong class="text-violet-300">2. 개인정보의 수집 및 이용 목적</strong><br>회원 식별, 다중 기기 간 오답노트 및 풀이 기록 동기화, 맞춤형 학습 통계 제공을 위해서만 사용됩니다.</p>
+                <p><strong class="text-violet-300">3. 보유 및 이용 기간</strong><br>회원 탈퇴 시 또는 사용자가 기록 삭제를 요청할 때까지 보유하며, 탈퇴 즉시 모든 개인정보와 풀이 기록은 지체 없이 파기됩니다.</p>
+                <p><strong class="text-violet-300">4. 보안 조치</strong><br>비밀번호는 안전하게 해시/암호화되어 처리되며, 제3자에게 개인정보를 제공하거나 판매하지 않습니다.</p>
+            </div>
+            <button type="button" onclick="acceptPrivacyAndClose()" class="mt-5 w-full py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-xs font-semibold text-white transition-colors shrink-0">
+                확인 및 동의
+            </button>
         </div>
     </div>
 
     <!-- 커스텀 알림 토스트 -->
     <div id="toastContainer" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase 초기화 (환경 변수 존재 시 활성화)
+        window.signoFirebase = { enabled: false, auth: null, db: null, appId: 'signo-app' };
+        try {
+            if (typeof __firebase_config !== 'undefined') {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                window.signoFirebase.auth = getAuth(app);
+                window.signoFirebase.db = getFirestore(app);
+                window.signoFirebase.appId = typeof __app_id !== 'undefined' ? __app_id : 'signo-app';
+                window.signoFirebase.enabled = true;
+                window.signoFirebase.fns = { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, doc, setDoc, deleteDoc, collection, onSnapshot };
+            }
+        } catch (e) {
+            console.warn('클라우드 동기화 초기화 대기:', e);
+        }
+    </script>
+
     <script>
         // ==========================================
-        // 0. PWA(웹 앱 설치) 동적 아이콘, 매니페스트 및 설치 프롬프트 설정
-        // ==========================================
-        let deferredInstallPrompt = null;
-
-        function setupPWA() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 512;
-            canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-
-            const grad = ctx.createLinearGradient(0, 0, 512, 512);
-            grad.addColorStop(0, '#10b981');
-            grad.addColorStop(1, '#047857');
-            ctx.fillStyle = grad;
-            ctx.beginPath();
-            ctx.roundRect(0, 0, 512, 512, 110);
-            ctx.fill();
-
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 44;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            ctx.moveTo(360, 150);
-            ctx.lineTo(360, 115);
-            ctx.lineTo(152, 115);
-            ctx.lineTo(265, 256);
-            ctx.lineTo(152, 397);
-            ctx.lineTo(360, 397);
-            ctx.lineTo(360, 362);
-            ctx.stroke();
-
-            const iconDataUrl = canvas.toDataURL('image/png');
-            const appleIconEl = document.getElementById('appleTouchIcon');
-            if (appleIconEl) appleIconEl.href = iconDataUrl;
-
-            const manifest = {
-                name: "SIGNO (시그노) - AI 전과목 문제 풀이",
-                short_name: "SIGNO",
-                description: "수학, 영어, 국어, 과학 문제를 사진이나 텍스트로 즉시 풀이하는 AI 튜터",
-                start_url: window.location.href,
-                display: "standalone",
-                background_color: "#020617",
-                theme_color: "#059669",
-                icons: [
-                    { src: iconDataUrl, sizes: "192x192", type: "image/png" },
-                    { src: iconDataUrl, sizes: "512x512", type: "image/png" }
-                ]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-            const manifestUrl = URL.createObjectURL(manifestBlob);
-            const manifestLinkEl = document.getElementById('pwaManifestLink');
-            if (manifestLinkEl) manifestLinkEl.href = manifestUrl;
-
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredInstallPrompt = e;
-            });
-
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-                const headerBtn = document.getElementById('headerInstallBtn');
-                const sidebarBtn = document.getElementById('sidebarInstallBtn');
-                if (headerBtn) headerBtn.classList.add('hidden');
-                if (sidebarBtn) sidebarBtn.classList.add('hidden');
-            }
-        }
-
-        async function triggerInstallApp() {
-            if (deferredInstallPrompt) {
-                deferredInstallPrompt.prompt();
-                const { outcome } = await deferredInstallPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    showToast('SIGNO 앱이 바탕화면에 설치되었습니다!', 'success');
-                }
-                deferredInstallPrompt = null;
-            } else {
-                document.getElementById('installGuideModal').classList.remove('hidden');
-                lucide.createIcons();
-            }
-        }
-
-        function closeInstallGuideModal() {
-            document.getElementById('installGuideModal').classList.add('hidden');
-        }
-
-        // ==========================================
-        // 1. 전역 상태, 시스템 프롬프트 및 세션 관리
+        // 1. 전역 상태, 시스템 프롬프트 및 초기화
         // ==========================================
         const SIGNO_SYSTEM_INSTRUCTION = `당신은 세계 최고 수준의 전과목(수학, 영어, 국어, 과학) 문제 풀이 전문 AI 어시스턴트 '시그노(SIGNO)'입니다.
 사용자가 입력한 문제(텍스트 또는 이미지)의 과목과 핵심을 정확히 파악하고, 이해하기 쉽고 논리적인 단계별 풀이를 제공하세요.
@@ -464,7 +529,7 @@
    - 비문학(독서)의 경우 지문의 핵심 논지 및 문단별 구조 분석을, 문학의 경우 표현상 특징 및 화자/인물의 정서와 주제를 분석하세요.
    - 문법/화작 문제는 적용되는 국어 규범과 선택지별 정오 근거를 조목조목 짚어주세요.
 4. **과학 (Science - 물리/화학/생명과학/지구과학)**:
-   - 적용되는 과학 법칙과 원리, 화학 반응식 및 단위 변환, 실험 변인(조작/통제/종속변인) 및 그래프 해석을 명확히 설명하세요.
+   - 적용되는 과학 법칙과 원리, 화학 반응식 및 단위 변환, 실험 변인 및 그래프 해석을 명확히 설명하세요.
    - 수식이나 화학식은 LaTeX($E=mc^2$, $\\text{H}_2\\text{O}$ 등)로 깔끔하게 표기하세요.
 
 [공통 출력 형식]
@@ -475,28 +540,28 @@
 
         const SUBJECT_EXAMPLES = {
             math: [
-                { tag: '미적분학 · 부분적분', color: 'text-emerald-400', border: 'hover:border-emerald-500/50', text: '$\\int_{0}^{\\pi/2} x \\sin(x) \\, dx$ 의 정적분 값을 단계별로 구해줘.', prompt: '다음 정적분의 값을 구하고 풀이 과정을 단계별로 설명해줘: ∫(0부터 π/2까지) x * sin(x) dx' },
-                { tag: '대수학 · 근과 계수의 관계', color: 'text-teal-400', border: 'hover:border-teal-500/50', text: '$x^2 - 4x + 7 = 0$ 의 두 근 $\\alpha, \\beta$ 에 대하여 $\\alpha^3 + \\beta^3$ 구하기', prompt: '이차방정식 x² - 4x + 7 = 0 의 두 근을 α, β라고 할 때, α³ + β³ 의 값을 구하는 과정을 알려줘.' },
-                { tag: '수열 · 시그마(Σ)의 합', color: 'text-green-400', border: 'hover:border-green-500/50', text: '$\\sum_{k=1}^{n} a_k = n^2 + 2n$ 일 때, 부분분수 급수의 합 구하기', prompt: '수열 {a_n}에 대하여 ∑(k=1부터 n까지) a_k = n² + 2n 일 때, ∑(k=1부터 10까지) 1/(a_k * a_{k+1}) 의 값을 구해줘.' },
-                { tag: '확률과 통계 · 경우의 수', color: 'text-lime-400', border: 'hover:border-lime-500/50', text: '주사위 2개를 동시에 던져 두 눈의 합이 소수일 확률 구하기', prompt: '주사위 2개를 동시에 던질 때, 나오는 두 눈의 수의 합이 소수(Prime number)일 확률을 구해줘.' }
+                { tag: '미적분학 · 부분적분', color: 'text-violet-400', border: 'hover:border-violet-500/50', text: '$\\int_{0}^{\\pi/2} x \\sin(x) \\, dx$ 의 정적분 값을 단계별로 구해줘.', prompt: '다음 정적분의 값을 구하고 풀이 과정을 단계별로 설명해줘: ∫(0부터 π/2까지) x * sin(x) dx' },
+                { tag: '대수학 · 근과 계수의 관계', color: 'text-fuchsia-400', border: 'hover:border-fuchsia-500/50', text: '$x^2 - 4x + 7 = 0$ 의 두 근 $\\alpha, \\beta$ 에 대하여 $\\alpha^3 + \\beta^3$ 구하기', prompt: '이차방정식 x² - 4x + 7 = 0 의 두 근을 α, β라고 할 때, α³ + β³ 의 값을 구하는 과정을 알려줘.' },
+                { tag: '수열 · 시그마(Σ)의 합', color: 'text-purple-400', border: 'hover:border-purple-500/50', text: '$\\sum_{k=1}^{n} a_k = n^2 + 2n$ 일 때, 부분분수 급수의 합 구하기', prompt: '수열 {a_n}에 대하여 ∑(k=1부터 n까지) a_k = n² + 2n 일 때, ∑(k=1부터 10까지) 1/(a_k * a_{k+1}) 의 값을 구해줘.' },
+                { tag: '확률과 통계 · 경우의 수', color: 'text-indigo-400', border: 'hover:border-indigo-500/50', text: '주사위 2개를 동시에 던져 두 눈의 합이 소수일 확률 구하기', prompt: '주사위 2개를 동시에 던질 때, 나오는 두 눈의 수의 합이 소수(Prime number)일 확률을 구해줘.' }
             ],
             english: [
-                { tag: '영어 문법 · 관계대명사', color: 'text-emerald-400', border: 'hover:border-emerald-500/50', text: '다음 문장에서 어법상 틀린 부분을 찾아 바르게 고치고 이유를 설명해줘: "The book which cover is red belongs to me."', prompt: '다음 영어 문장에서 어법상 틀린 부분을 찾아 바르게 고치고 문법적 이유를 자세히 설명해줘: "The book which cover is red belongs to me."' },
-                { tag: '독해 · 구문 분석', color: 'text-teal-400', border: 'hover:border-teal-500/50', text: '"Not only did she finish the project on time, but she also exceeded expectations." 구문 분석 및 해석', prompt: '다음 영어 문장의 도치 구문 구조(주어, 동사 등)를 분석하고 자연스럽게 해석해줘: "Not only did she finish the project on time, but she also exceeded expectations."' },
-                { tag: '어휘 · 유의어 뉘앙스', color: 'text-green-400', border: 'hover:border-green-500/50', text: 'affect 와 effect 의 품사 및 문맥별 쓰임 차이를 예문과 함께 알려줘.', prompt: '영어 단어 affect 와 effect 의 품사, 의미, 그리고 실제 시험에서 자주 나오는 쓰임 차이를 예문과 함께 정리해줘.' },
-                { tag: '가정법 · 시제 일치', color: 'text-lime-400', border: 'hover:border-lime-500/50', text: '"If I had known about the traffic, I would have left earlier." 가정법 과거완료 분석', prompt: '다음 문장에 쓰인 가정법 시제를 분석하고 직설법으로 전환하는 과정을 설명해줘: "If I had known about the traffic, I would have left earlier."' }
+                { tag: '영어 문법 · 관계대명사', color: 'text-violet-400', border: 'hover:border-violet-500/50', text: '다음 문장에서 어법상 틀린 부분을 찾아 바르게 고치고 이유를 설명해줘: "The book which cover is red belongs to me."', prompt: '다음 영어 문장에서 어법상 틀린 부분을 찾아 바르게 고치고 문법적 이유를 자세히 설명해줘: "The book which cover is red belongs to me."' },
+                { tag: '독해 · 구문 분석', color: 'text-fuchsia-400', border: 'hover:border-fuchsia-500/50', text: '"Not only did she finish the project on time, but she also exceeded expectations." 구문 분석 및 해석', prompt: '다음 영어 문장의 도치 구문 구조(주어, 동사 등)를 분석하고 자연스럽게 해석해줘: "Not only did she finish the project on time, but she also exceeded expectations."' },
+                { tag: '어휘 · 유의어 뉘앙스', color: 'text-purple-400', border: 'hover:border-purple-500/50', text: 'affect 와 effect 의 품사 및 문맥별 쓰임 차이를 예문과 함께 알려줘.', prompt: '영어 단어 affect 와 effect 의 품사, 의미, 그리고 실제 시험에서 자주 나오는 쓰임 차이를 예문과 함께 정리해줘.' },
+                { tag: '가정법 · 시제 일치', color: 'text-indigo-400', border: 'hover:border-indigo-500/50', text: '"If I had known about the traffic, I would have left earlier." 가정법 과거완료 분석', prompt: '다음 문장에 쓰인 가정법 시제를 분석하고 직설법으로 전환하는 과정을 설명해줘: "If I had known about the traffic, I would have left earlier."' }
             ],
             korean: [
-                { tag: '국어 문법 · 음운 변동', color: 'text-emerald-400', border: 'hover:border-emerald-500/50', text: "'국물[궁물]'과 '같이[가치]'에서 일어나는 음운 변동 현상을 각각 설명해줘.", prompt: "한국어 단어 '국물[궁물]'과 '같이[가치]'에서 일어나는 음운 변동 현상의 명칭과 원리를 단계별로 설명해줘." },
-                { tag: '문학 · 표현상 특징', color: 'text-teal-400', border: 'hover:border-teal-500/50', text: '시에서 자주 쓰이는 역설법과 반어법의 차이점을 대표적인 예시와 함께 알려줘.', prompt: '현대시에서 자주 출제되는 역설법과 반어법의 개념적 차이점을 대표적인 문학 작품 예시와 함께 알기 쉽게 비교해줘.' },
-                { tag: '맞춤법 · 띄어쓰기', color: 'text-green-400', border: 'hover:border-green-500/50', text: "'할 수 있다'와 '할 수밖에 없다'의 올바른 띄어쓰기와 문법적 근거 설명", prompt: "'할 수 있다'와 '할 수밖에 없다'의 올바른 띄어쓰기 표기와 그 문법적 근거(의존명사 vs 조사)를 설명해줘." },
-                { tag: '고전 문법 · 중세 국어', color: 'text-lime-400', border: 'hover:border-lime-500/50', text: "훈민정음 서문 '나랏말싸미 듕귁에 달아'에 나타난 중세 국어의 특징 분석", prompt: "훈민정음 언해본의 '나랏말싸미 듕귁에 달아' 구절에 나타난 중세 국어의 음운 및 표기법 특징을 분석해줘." }
+                { tag: '국어 문법 · 음운 변동', color: 'text-violet-400', border: 'hover:border-violet-500/50', text: "'국물[궁물]'과 '같이[가치]'에서 일어나는 음운 변동 현상을 각각 설명해줘.", prompt: "한국어 단어 '국물[궁물]'과 '같이[가치]'에서 일어나는 음운 변동 현상의 명칭과 원리를 단계별로 설명해줘." },
+                { tag: '문학 · 표현상 특징', color: 'text-fuchsia-400', border: 'hover:border-fuchsia-500/50', text: '시에서 자주 쓰이는 역설법과 반어법의 차이점을 대표적인 예시와 함께 알려줘.', prompt: '현대시에서 자주 출제되는 역설법과 반어법의 개념적 차이점을 대표적인 문학 작품 예시와 함께 알기 쉽게 비교해줘.' },
+                { tag: '맞춤법 · 띄어쓰기', color: 'text-purple-400', border: 'hover:border-purple-500/50', text: "'할 수 있다'와 '할 수밖에 없다'의 올바른 띄어쓰기와 문법적 근거 설명", prompt: "'할 수 있다'와 '할 수밖에 없다'의 올바른 띄어쓰기 표기와 그 문법적 근거(의존명사 vs 조사)를 설명해줘." },
+                { tag: '고전 문법 · 중세 국어', color: 'text-indigo-400', border: 'hover:border-indigo-500/50', text: "훈민정음 서문 '나랏말싸미 듕귁에 달아'에 나타난 중세 국어의 특징 분석", prompt: "훈민정음 언해본의 '나랏말싸미 듕귁에 달아' 구절에 나타난 중세 국어의 음운 및 표기법 특징을 분석해줘." }
             ],
             science: [
-                { tag: '물리학 · 역학적 에너지', color: 'text-emerald-400', border: 'hover:border-emerald-500/50', text: '높이 20m에서 자유 낙하하는 질량 2kg 물체가 지면에 닿기 직전의 속력은? (g=10m/s²)', prompt: '마찰이 없는 상태에서 높이 20m인 곳에서 가만히 놓아 자유 낙하하는 질량 2kg인 물체가 지면에 닿기 직전의 속력과 운동 에너지를 구해줘. (단, 중력가속도 g = 10 m/s²)' },
-                { tag: '화학 · 화학 반응식과 몰', color: 'text-teal-400', border: 'hover:border-teal-500/50', text: '메테인($\\text{CH}_4$) 32g이 완전 연소할 때 생성되는 이산화탄소($\\text{CO}_2$)의 질량 구하기', prompt: '메테인(CH4) 32g이 충분한 산소와 반응하여 완전 연소할 때 생성되는 이산화탄소(CO2)의 몰수와 질량을 화학 반응식을 세워 구해줘. (원자량: H=1, C=12, O=16)' },
-                { tag: '생명과학 · 세포 분열', color: 'text-green-400', border: 'hover:border-green-500/50', text: '체세포 분열과 감수 분열(생식세포 분열)의 염색체 수 변화 및 특징 비교', prompt: '체세포 분열과 감수 분열(제1분열, 제2분열) 과정에서 염색체 수와 DNA 상대량 변화 및 핵심 차이점을 표와 함께 정리해줘.' },
-                { tag: '지구과학 · 판 구조론', color: 'text-lime-400', border: 'hover:border-lime-500/50', text: '판의 경계(발산형, 수렴형, 보존형)에서 나타나는 대표적 지형과 지각 변동 정리', prompt: '판 구조론에서 발산형 경계, 수렴형 경계(섭입형/충돌형), 보존형 경계에서 각각 발달하는 대표적 지형과 화산·지진 활동을 정리해줘.' }
+                { tag: '물리학 · 역학적 에너지', color: 'text-violet-400', border: 'hover:border-violet-500/50', text: '높이 20m에서 자유 낙하하는 질량 2kg 물체가 지면에 닿기 직전의 속력은? (g=10m/s²)', prompt: '마찰이 없는 상태에서 높이 20m인 곳에서 가만히 놓아 자유 낙하하는 질량 2kg인 물체가 지면에 닿기 직전의 속력과 운동 에너지를 구해줘. (단, 중력가속도 g = 10 m/s²)' },
+                { tag: '화학 · 화학 반응식과 몰', color: 'text-fuchsia-400', border: 'hover:border-fuchsia-500/50', text: '메테인($\\text{CH}_4$) 32g이 완전 연소할 때 생성되는 이산화탄소($\\text{CO}_2$)의 질량 구하기', prompt: '메테인(CH4) 32g이 충분한 산소와 반응하여 완전 연소할 때 생성되는 이산화탄소(CO2)의 몰수와 질량을 화학 반응식을 세워 구해줘. (원자량: H=1, C=12, O=16)' },
+                { tag: '생명과학 · 세포 분열', color: 'text-purple-400', border: 'hover:border-purple-500/50', text: '체세포 분열과 감수 분열(생식세포 분열)의 염색체 수 변화 및 특징 비교', prompt: '체세포 분열과 감수 분열(제1분열, 제2분열) 과정에서 염색체 수와 DNA 상대량 변화 및 핵심 차이점을 표와 함께 정리해줘.' },
+                { tag: '지구과학 · 판 구조론', color: 'text-indigo-400', border: 'hover:border-indigo-500/50', text: '판의 경계(발산형, 수렴형, 보존형)에서 나타나는 대표적 지형과 지각 변동 정리', prompt: '판 구조론에서 발산형 경계, 수렴형 경계(섭입형/충돌형), 보존형 경계에서 각각 발달하는 대표적 지형과 화산·지진 활동을 정리해줘.' }
             ]
         };
 
@@ -507,13 +572,21 @@
         let selectedImageBase64 = null;
         let selectedImageMimeType = null;
         let isGenerating = false;
+        let isStudyMode = false;
+        let sidebarFilter = 'all'; // 'all' | 'bookmarked'
+        let userProfile = { nickname: '게스트 학생' };
+        let authMode = 'login'; // 'login' | 'signup'
+        let currentUser = null;
+        let unsubscribeFirestore = null;
+        let lastRequestTime = 0;
 
         window.addEventListener('DOMContentLoaded', () => {
-            setupPWA();
             lucide.createIcons();
+            loadProfileFromStorage();
             loadSessionsFromStorage();
             renderChatList();
             selectSubject('math');
+            initAuthListener();
 
             const checkKatex = setInterval(() => {
                 if (window.renderMathInElement) {
@@ -523,28 +596,377 @@
             }, 100);
         });
 
+        // ==========================================
+        // 2. 로그인 / 회원가입 & 클라우드 동기화
+        // ==========================================
+        function initAuthListener() {
+            if (!window.signoFirebase?.enabled) return;
+            const { auth, fns } = window.signoFirebase;
+            fns.onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                if (user) {
+                    userProfile.nickname = user.displayName || user.email?.split('@')[0] || '학생';
+                    updateProfileUI();
+                    subscribeCloudSessions(user.uid);
+                } else {
+                    if (unsubscribeFirestore) {
+                        unsubscribeFirestore();
+                        unsubscribeFirestore = null;
+                    }
+                    loadProfileFromStorage();
+                    loadSessionsFromStorage();
+                    renderChatList();
+                }
+                updateAccountModalUI();
+            });
+        }
+
+        function subscribeCloudSessions(uid) {
+            if (!window.signoFirebase?.enabled || !uid) return;
+            const { db, appId, fns } = window.signoFirebase;
+            const colRef = fns.collection(db, 'artifacts', appId, 'users', uid, 'sessions');
+            if (unsubscribeFirestore) unsubscribeFirestore();
+
+            unsubscribeFirestore = fns.onSnapshot(colRef, (snapshot) => {
+                const cloudSessions = [];
+                snapshot.forEach(docSnap => {
+                    cloudSessions.push(docSnap.data());
+                });
+                cloudSessions.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+                sessions = cloudSessions;
+                saveSessionsToStorage();
+                renderChatList();
+            }, (err) => {
+                console.error('동기화 오류:', err);
+            });
+        }
+
+        async function syncSessionToCloud(session) {
+            if (!window.signoFirebase?.enabled || !currentUser || !session) return;
+            const { db, appId, fns } = window.signoFirebase;
+            try {
+                const docRef = fns.doc(db, 'artifacts', appId, 'users', currentUser.uid, 'sessions', session.id);
+                await fns.setDoc(docRef, session);
+            } catch (e) {
+                console.error('클라우드 저장 실패:', e);
+            }
+        }
+
+        async function deleteSessionFromCloud(sessionId) {
+            if (!window.signoFirebase?.enabled || !currentUser) return;
+            const { db, appId, fns } = window.signoFirebase;
+            try {
+                const docRef = fns.doc(db, 'artifacts', appId, 'users', currentUser.uid, 'sessions', sessionId);
+                await fns.deleteDoc(docRef);
+            } catch (e) {
+                console.error('클라우드 삭제 실패:', e);
+            }
+        }
+
+        function switchAuthTab(mode) {
+            authMode = mode;
+            const loginTab = document.getElementById('authTabLogin');
+            const signupTab = document.getElementById('authTabSignup');
+            const nickWrap = document.getElementById('signupNicknameWrap');
+            const privacyWrap = document.getElementById('privacyAgreeWrap');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const idMsg = document.getElementById('idCheckMsg');
+
+            if (idMsg) idMsg.classList.add('hidden');
+
+            if (mode === 'login') {
+                loginTab.className = 'py-1.5 rounded-lg text-xs font-semibold bg-violet-600 text-white transition-all';
+                signupTab.className = 'py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all';
+                nickWrap.classList.add('hidden');
+                privacyWrap.classList.add('hidden');
+                submitBtn.textContent = '로그인 및 동기화';
+            } else {
+                signupTab.className = 'py-1.5 rounded-lg text-xs font-semibold bg-violet-600 text-white transition-all';
+                loginTab.className = 'py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all';
+                nickWrap.classList.remove('hidden');
+                privacyWrap.classList.remove('hidden');
+                submitBtn.textContent = '회원가입 및 시작하기';
+                const currentId = document.getElementById('authIdInput')?.value || '';
+                if (currentId) autoCheckIdDuplicate(currentId);
+            }
+        }
+
+        let idCheckTimer = null;
+        let isIdDuplicate = false;
+
+        function getLocalUsers() {
+            try {
+                return JSON.parse(localStorage.getItem('signo_local_users') || '{}');
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function autoCheckIdDuplicate(userId) {
+            const msgEl = document.getElementById('idCheckMsg');
+            if (!msgEl) return;
+            if (authMode !== 'signup') {
+                msgEl.classList.add('hidden');
+                isIdDuplicate = false;
+                return;
+            }
+
+            const trimmed = userId.trim().toLowerCase();
+            if (!trimmed || trimmed.length < 3) {
+                msgEl.classList.add('hidden');
+                isIdDuplicate = false;
+                return;
+            }
+
+            clearTimeout(idCheckTimer);
+            msgEl.classList.remove('hidden');
+            msgEl.className = 'text-[11px] mt-1 font-medium text-slate-400';
+            msgEl.textContent = '아이디 중복 확인 중...';
+
+            idCheckTimer = setTimeout(() => {
+                const localUsers = getLocalUsers();
+                if (localUsers[trimmed]) {
+                    isIdDuplicate = true;
+                    msgEl.className = 'text-[11px] mt-1 font-medium text-red-400';
+                    msgEl.textContent = '이미 사용 중인 아이디입니다.';
+                } else {
+                    isIdDuplicate = false;
+                    msgEl.className = 'text-[11px] mt-1 font-medium text-emerald-400';
+                    msgEl.textContent = '사용 가능한 아이디입니다.';
+                }
+            }, 350);
+        }
+
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').classList.add('hidden');
+        }
+
+        function acceptPrivacyAndClose() {
+            const cb = document.getElementById('privacyAgreeCheckbox');
+            if (cb) cb.checked = true;
+            closePrivacyModal();
+        }
+
+        async function handleAuthSubmit(event) {
+            event.preventDefault();
+            const userId = document.getElementById('authIdInput').value.trim().toLowerCase();
+            const password = document.getElementById('authPasswordInput').value;
+            const nickname = document.getElementById('authNicknameInput').value.trim() || userId;
+
+            if (userId.length < 3) {
+                showToast('아이디는 3자 이상 입력해 주세요.', 'error');
+                return;
+            }
+
+            if (authMode === 'signup') {
+                const agreed = document.getElementById('privacyAgreeCheckbox')?.checked;
+                if (!agreed) {
+                    showToast('개인정보처리방침에 동의해 주세요.', 'error');
+                    return;
+                }
+                if (isIdDuplicate) {
+                    showToast('이미 사용 중인 아이디입니다. 다른 아이디를 입력해 주세요.', 'error');
+                    return;
+                }
+            }
+
+            const localUsers = getLocalUsers();
+            if (authMode === 'signup') {
+                if (localUsers[userId]) {
+                    showToast('이미 사용 중인 아이디입니다.', 'error');
+                    return;
+                }
+                localUsers[userId] = {
+                    passwordHash: btoa(unescape(encodeURIComponent(password))),
+                    nickname,
+                    createdAt: Date.now()
+                };
+                localStorage.setItem('signo_local_users', JSON.stringify(localUsers));
+                currentUser = { email: userId, displayName: nickname, uid: 'user-' + btoa(unescape(encodeURIComponent(userId))) };
+                userProfile.nickname = nickname;
+                localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
+                updateProfileUI();
+                updateAccountModalUI();
+                document.getElementById('authPasswordInput').value = '';
+                showToast('회원가입이 완료되었습니다!', 'success');
+            } else {
+                const userRecord = localUsers[userId];
+                const inputHash = btoa(unescape(encodeURIComponent(password)));
+                if (!userRecord || userRecord.passwordHash !== inputHash) {
+                    showToast('아이디 또는 비밀번호가 올바르지 않습니다.', 'error');
+                    return;
+                }
+                currentUser = { email: userId, displayName: userRecord.nickname, uid: 'user-' + btoa(unescape(encodeURIComponent(userId))) };
+                userProfile.nickname = userRecord.nickname;
+                localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
+                updateProfileUI();
+                updateAccountModalUI();
+                document.getElementById('authPasswordInput').value = '';
+                showToast('로그인되었습니다.', 'success');
+            }
+        }
+
+        async function handleLogout() {
+            if (window.signoFirebase?.enabled && window.signoFirebase.auth.currentUser) {
+                const { auth, fns } = window.signoFirebase;
+                await fns.signOut(auth);
+            }
+            currentUser = null;
+            userProfile.nickname = '게스트 학생';
+            localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
+            updateProfileUI();
+            updateAccountModalUI();
+            showToast('로그아웃되었습니다.', 'info');
+        }
+
+        function updateAccountModalUI() {
+            const authSec = document.getElementById('authFormSection');
+            const loggedSec = document.getElementById('loggedInSection');
+            if (currentUser) {
+                authSec.classList.add('hidden');
+                loggedSec.classList.remove('hidden');
+                document.getElementById('loggedInEmail').textContent = currentUser.email || '로그인된 계정';
+                document.getElementById('nicknameInput').value = userProfile.nickname || '';
+            } else {
+                authSec.classList.remove('hidden');
+                loggedSec.classList.add('hidden');
+            }
+        }
+
+        function loadProfileFromStorage() {
+            try {
+                const raw = localStorage.getItem('signo_user_profile');
+                if (raw) userProfile = JSON.parse(raw);
+            } catch (e) {}
+            updateProfileUI();
+        }
+
+        function updateProfileUI() {
+            const nameEl = document.getElementById('sidebarUserName');
+            const avatarEl = document.getElementById('userAvatarBadge');
+            if (nameEl) nameEl.textContent = userProfile.nickname || '게스트 학생';
+            if (avatarEl) avatarEl.textContent = (userProfile.nickname || 'S').charAt(0).toUpperCase();
+        }
+
+        function openAccountModal() {
+            updateAccountModalUI();
+            document.getElementById('statTotalChats').textContent = sessions.length;
+            document.getElementById('statBookmarks').textContent = sessions.filter(s => s.bookmarked).length;
+            const totalQ = sessions.reduce((acc, s) => acc + (s.history ? s.history.filter(m => m.role === 'user').length : 0), 0);
+            document.getElementById('statQuestions').textContent = totalQ;
+            
+            document.getElementById('accountModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeAccountModal() {
+            document.getElementById('accountModal').classList.add('hidden');
+        }
+
+        async function saveProfileNickname() {
+            const val = document.getElementById('nicknameInput').value.trim();
+            if (!val) {
+                showToast('닉네임을 입력해 주세요.', 'error');
+                return;
+            }
+            userProfile.nickname = val;
+            localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
+            if (currentUser && window.signoFirebase?.enabled) {
+                await window.signoFirebase.fns.updateProfile(currentUser, { displayName: val });
+            }
+            updateProfileUI();
+            showToast('프로필 닉네임이 변경되었습니다.', 'success');
+        }
+
+        // ==========================================
+        // 3. 스터디 모드(정답 가리기) & 사이드바 필터
+        // ==========================================
+        function toggleStudyMode() {
+            isStudyMode = !isStudyMode;
+            const btn = document.getElementById('studyModeBtn');
+            const iconEl = document.getElementById('studyModeIcon');
+            const textEl = document.getElementById('studyModeText');
+
+            if (isStudyMode) {
+                btn.classList.add('bg-violet-600/30', 'border-violet-500/50', 'text-violet-200');
+                iconEl.setAttribute('data-lucide', 'eye');
+                textEl.textContent = '정답 보기';
+                showToast('정답 가리기 모드가 켜졌습니다. 풀이를 클릭하면 보입니다.', 'info');
+            } else {
+                btn.classList.remove('bg-violet-600/30', 'border-violet-500/50', 'text-violet-200');
+                iconEl.setAttribute('data-lucide', 'eye-off');
+                textEl.textContent = '정답 가리기';
+                showToast('정답 가리기 모드가 꺼졌습니다.', 'info');
+            }
+            lucide.createIcons();
+
+            document.querySelectorAll('.math-content').forEach(el => {
+                if (isStudyMode) {
+                    el.classList.add('study-blur');
+                } else {
+                    el.classList.remove('study-blur');
+                }
+            });
+        }
+
+        function setSidebarFilter(filter) {
+            sidebarFilter = filter;
+            const allBtn = document.getElementById('filterAllBtn');
+            const bmBtn = document.getElementById('filterBookmarkedBtn');
+            const titleEl = document.getElementById('sidebarListTitle');
+
+            if (filter === 'all') {
+                allBtn.className = 'py-1.5 rounded-lg text-[11px] font-semibold bg-violet-600/80 text-white transition-all';
+                bmBtn.className = 'py-1.5 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1';
+                titleEl.textContent = '최근 풀이 기록';
+            } else {
+                bmBtn.className = 'py-1.5 rounded-lg text-[11px] font-semibold bg-violet-600/80 text-white transition-all flex items-center justify-center gap-1';
+                allBtn.className = 'py-1.5 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white transition-all';
+                titleEl.textContent = '저장된 오답노트';
+            }
+            renderChatList();
+        }
+
+        function toggleBookmark(event, sessionId) {
+            event.stopPropagation();
+            const session = sessions.find(s => s.id === sessionId);
+            if (!session) return;
+            session.bookmarked = !session.bookmarked;
+            saveSessionsToStorage();
+            syncSessionToCloud(session);
+            renderChatList();
+            showToast(session.bookmarked ? '오답노트(북마크)에 저장되었습니다.' : '오답노트에서 제거되었습니다.', 'info');
+        }
+
+        // ==========================================
+        // 4. 과목 선택 & 세션 관리
+        // ==========================================
         function selectSubject(subject) {
             currentSubject = subject;
-
             document.querySelectorAll('.subject-tab').forEach(btn => {
-                btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-md');
+                btn.classList.remove('bg-violet-600', 'text-white', 'shadow-md');
                 btn.classList.add('text-slate-400');
             });
             const activeTab = document.getElementById(`tab-${subject}`);
             if (activeTab) {
                 activeTab.classList.remove('text-slate-400');
-                activeTab.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
+                activeTab.classList.add('bg-violet-600', 'text-white', 'shadow-md');
             }
 
             const targetSubject = SUBJECT_EXAMPLES[subject] ? subject : 'math';
             const container = document.getElementById('exampleCardsContainer');
             if (container) {
                 container.innerHTML = SUBJECT_EXAMPLES[targetSubject].map(item => `
-                    <button onclick="useExample('${item.prompt.replace(/'/g, "\\'")}')" class="p-4 rounded-2xl bg-white/[0.025] hover:bg-white/[0.055] backdrop-blur-md border border-white/[0.07] ${item.border} transition-all duration-200 group hover:-translate-y-0.5 shadow-sm">
+                    <button onclick="useExample('${item.prompt.replace(/'/g, "\\'")}')" class="p-4 rounded-2xl bg-white/[0.025] hover:bg-white/[0.06] backdrop-blur-md border border-white/[0.07] ${item.border} transition-all duration-200 group hover:-translate-y-0.5 shadow-sm">
                         <div class="flex items-center justify-between mb-1.5">
                             <span class="text-[11px] font-semibold tracking-wide ${item.color}">${item.tag}</span>
-                            <div class="w-6 h-6 rounded-lg bg-white/[0.03] group-hover:bg-emerald-500/20 flex items-center justify-center transition-colors">
-                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-500 group-hover:text-emerald-400 transition-colors"></i>
+                            <div class="w-6 h-6 rounded-lg bg-white/[0.03] group-hover:bg-violet-500/20 flex items-center justify-center transition-colors">
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-500 group-hover:text-violet-400 transition-colors"></i>
                             </div>
                         </div>
                         <p class="text-xs sm:text-[13px] text-slate-300 group-hover:text-white line-clamp-2 leading-relaxed transition-colors">${item.text}</p>
@@ -600,29 +1022,46 @@
         function renderChatList() {
             const container = document.getElementById('chatListContainer');
             const badge = document.getElementById('chatCountBadge');
-            badge.textContent = sessions.length;
+            const searchQuery = (document.getElementById('sidebarSearchInput')?.value || '').toLowerCase().trim();
 
-            if (sessions.length === 0) {
+            let filtered = sessions;
+            if (sidebarFilter === 'bookmarked') {
+                filtered = filtered.filter(s => s.bookmarked);
+            }
+            if (searchQuery) {
+                filtered = filtered.filter(s => s.title.toLowerCase().includes(searchQuery));
+            }
+
+            badge.textContent = filtered.length;
+
+            if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-8 px-3 text-xs text-slate-500">
-                        아직 저장된 풀이 기록이 없습니다.<br>새 문제를 질문해 보세요!
+                        ${sidebarFilter === 'bookmarked' ? '오답노트에 저장된 풀이가 없습니다.' : '표시할 풀이 기록이 없습니다.'}
                     </div>
                 `;
                 return;
             }
 
-            container.innerHTML = sessions.map(session => {
+            container.innerHTML = filtered.map(session => {
                 const isActive = session.id === currentSessionId;
                 const dateStr = new Date(session.updatedAt).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
+                const starClass = session.bookmarked ? 'text-amber-400 fill-amber-400 opacity-100' : 'text-slate-500 opacity-60 sm:opacity-0 group-hover:opacity-100 hover:text-amber-400';
+
                 return `
-                    <div onclick="selectSession('${session.id}')" class="group flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${isActive ? 'bg-emerald-500/15 border border-emerald-500/30 text-white shadow-xs' : 'hover:bg-white/[0.04] text-slate-300 border border-transparent'}">
+                    <div onclick="selectSession('${session.id}')" class="group flex items-center justify-between gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${isActive ? 'bg-violet-500/15 border border-violet-500/35 text-white shadow-xs' : 'hover:bg-white/[0.04] text-slate-300 border border-transparent'}">
                         <div class="min-w-0 flex-1">
-                            <p class="text-xs font-medium truncate ${isActive ? 'text-emerald-300 font-semibold' : 'text-slate-300 group-hover:text-white'}">${escapeHtml(session.title)}</p>
+                            <p class="text-xs font-medium truncate ${isActive ? 'text-violet-300 font-semibold' : 'text-slate-300 group-hover:text-white'}">${escapeHtml(session.title)}</p>
                             <p class="text-[10px] text-slate-500 mt-0.5">${dateStr}</p>
                         </div>
-                        <button onclick="deleteSession(event, '${session.id}')" title="채팅 삭제" class="opacity-70 sm:opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all shrink-0">
-                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                        </button>
+                        <div class="flex items-center gap-0.5 shrink-0">
+                            <button onclick="toggleBookmark(event, '${session.id}')" title="오답노트 저장" class="p-1.5 rounded-lg hover:bg-white/[0.06] transition-all">
+                                <i data-lucide="star" class="w-3.5 h-3.5 ${starClass}"></i>
+                            </button>
+                            <button onclick="deleteSession(event, '${session.id}')" title="채팅 삭제" class="opacity-60 sm:opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
             }).join('');
@@ -685,6 +1124,7 @@
             event.stopPropagation();
             sessions = sessions.filter(s => s.id !== sessionId);
             saveSessionsToStorage();
+            deleteSessionFromCloud(sessionId);
 
             if (currentSessionId === sessionId) {
                 createNewChat();
@@ -695,76 +1135,38 @@
         }
 
         // ==========================================
-        // 2. API 키 관리 로직
+        // 5. API 키 관리
         // ==========================================
         const DEFAULT_ENCODED_KEY = "QVEuQWI4Uk42SktHeFo0OF9YVEcyY2pOOUgwRHhIc2FNVk9fNU9jMU5xYlBnb0FBNDY1SEE=";
 
         function getDefaultApiKey() {
-            try {
-                return atob(DEFAULT_ENCODED_KEY);
-            } catch (e) {
-                return "";
-            }
+            try { return atob(DEFAULT_ENCODED_KEY); } catch (e) { return ""; }
         }
 
         function getApiKey() {
-            const customKey = localStorage.getItem('signo_custom_api_key');
-            if (customKey && customKey.trim() !== '') {
-                return customKey.trim();
-            }
             return getDefaultApiKey();
         }
 
-        function openApiModal() {
-            const input = document.getElementById('apiKeyInput');
-            input.value = localStorage.getItem('signo_custom_api_key') || '';
-            document.getElementById('apiModal').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        function closeApiModal() {
-            document.getElementById('apiModal').classList.add('hidden');
-        }
-
-        function saveApiKey() {
-            const val = document.getElementById('apiKeyInput').value.trim();
-            if (!val) {
-                showToast('API 키를 입력해 주세요.', 'error');
-                return;
-            }
-            localStorage.setItem('signo_custom_api_key', val);
-            closeApiModal();
-            showToast('API 키가 저장되었습니다.', 'success');
-        }
-
-        function resetApiKey() {
-            localStorage.removeItem('signo_custom_api_key');
-            document.getElementById('apiKeyInput').value = '';
-            closeApiModal();
-            showToast('기본 API 키로 복원되었습니다.', 'info');
-        }
-
         // ==========================================
-        // 3. UI 유틸리티 및 입력 제어
+        // 6. UI 유틸리티 & 이미지 업로드
         // ==========================================
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            
             const colors = {
-                success: 'bg-emerald-950/90 border-emerald-500/50 text-emerald-200',
+                success: 'bg-violet-950/90 border-violet-500/50 text-violet-200',
                 error: 'bg-red-950/90 border-red-500/50 text-red-200',
-                info: 'bg-slate-900/90 border-emerald-500/50 text-slate-200'
+                info: 'bg-[#150f29]/95 border-violet-500/40 text-slate-200'
             };
 
             toast.className = `px-4 py-3 rounded-2xl border backdrop-blur-md shadow-xl text-xs font-medium flex items-center gap-2 transition-all duration-300 transform translate-y-0 opacity-100 ${colors[type]}`;
             toast.innerHTML = `<span>${message}</span>`;
-            
             container.appendChild(toast);
+
             setTimeout(() => {
                 toast.classList.add('opacity-0', '-translate-y-2');
                 setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            }, 3200);
         }
 
         function autoResize(textarea) {
@@ -786,24 +1188,22 @@
             sendMessage();
         }
 
-        // ==========================================
-        // 4. 이미지 업로드 처리
-        // ==========================================
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             if (!file.type.startsWith('image/')) {
                 showToast('이미지 파일만 업로드할 수 있습니다.', 'error');
                 return;
             }
-
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('보안 및 성능을 위해 5MB 이하의 이미지만 업로드할 수 있습니다.', 'error');
+                return;
+            }
             const reader = new FileReader();
             reader.onload = (e) => {
                 const fullDataUrl = e.target.result;
                 selectedImageBase64 = fullDataUrl.split(',')[1];
                 selectedImageMimeType = file.type;
-
                 document.getElementById('imagePreview').src = fullDataUrl;
                 document.getElementById('imageFileName').textContent = file.name;
                 document.getElementById('imagePreviewContainer').classList.remove('hidden');
@@ -819,11 +1219,10 @@
         }
 
         // ==========================================
-        // 5. Gemini API 호출
+        // 7. Gemini API 호출 & 후속 튜터링 액션
         // ==========================================
         async function fetchGeminiWithRetry(payload, apiKey, retries = 3) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-            
             for (let attempt = 0; attempt <= retries; attempt++) {
                 try {
                     const response = await fetch(url, {
@@ -831,7 +1230,6 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
                     if (!response.ok) {
                         const errData = await response.json().catch(() => ({}));
                         if (response.status === 400 || response.status === 403) {
@@ -839,20 +1237,29 @@
                         }
                         throw new Error(`HTTP ${response.status}`);
                     }
-
                     return await response.json();
                 } catch (error) {
-                    if (attempt === retries || error.message.includes('API 키')) {
-                        throw error;
-                    }
-                    const delay = Math.pow(2, attempt) * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
+                    if (attempt === retries || error.message.includes('API 키')) throw error;
+                    await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
                 }
             }
         }
 
+        async function sendFollowUpAction(promptText) {
+            if (isGenerating) return;
+            const inputEl = document.getElementById('promptInput');
+            inputEl.value = promptText;
+            await sendMessage();
+        }
+
         async function sendMessage() {
             if (isGenerating) return;
+            const now = Date.now();
+            if (now - lastRequestTime < 1500) {
+                showToast('잠시 후 다시 시도해 주세요.', 'info');
+                return;
+            }
+            lastRequestTime = now;
 
             const inputEl = document.getElementById('promptInput');
             const text = inputEl.value.trim();
@@ -863,7 +1270,6 @@
             }
 
             const apiKey = getApiKey();
-
             document.getElementById('welcomeSection').classList.add('hidden');
             const chatContainer = document.getElementById('chatContainer');
             chatContainer.classList.remove('hidden');
@@ -875,24 +1281,16 @@
                 sessions.unshift({
                     id: currentSessionId,
                     title: titleText,
+                    bookmarked: false,
                     updatedAt: Date.now(),
                     history: []
                 });
             }
 
             const userParts = [];
-            if (text) {
-                userParts.push({ text: text });
-            } else {
-                userParts.push({ text: '첨부된 사진의 문제를 풀어주세요.' });
-            }
+            userParts.push({ text: text || '첨부된 사진의 문제를 풀어주세요.' });
             if (selectedImageBase64) {
-                userParts.push({
-                    inlineData: {
-                        mimeType: selectedImageMimeType,
-                        data: selectedImageBase64
-                    }
-                });
+                userParts.push({ inlineData: { mimeType: selectedImageMimeType, data: selectedImageBase64 } });
             }
 
             const imageSrcForUI = selectedImageBase64 ? document.getElementById('imagePreview').src : null;
@@ -912,20 +1310,14 @@
             try {
                 const payload = {
                     contents: chatHistory,
-                    systemInstruction: {
-                        parts: [{ text: SIGNO_SYSTEM_INSTRUCTION }]
-                    },
-                    generationConfig: {
-                        temperature: 0.2,
-                    }
+                    systemInstruction: { parts: [{ text: SIGNO_SYSTEM_INSTRUCTION }] },
+                    generationConfig: { temperature: 0.25 }
                 };
 
                 const result = await fetchGeminiWithRetry(payload, apiKey);
                 const aiResponseText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-                if (!aiResponseText) {
-                    throw new Error('AI로부터 유효한 풀이 응답을 받지 못했습니다.');
-                }
+                if (!aiResponseText) throw new Error('AI로부터 유효한 풀이 응답을 받지 못했습니다.');
 
                 removeElement(loadingId);
                 appendAIMessage(aiResponseText);
@@ -951,25 +1343,23 @@
                 const [updatedSession] = sessions.splice(idx, 1);
                 sessions.unshift(updatedSession);
                 saveSessionsToStorage();
+                syncSessionToCloud(updatedSession);
                 renderChatList();
             }
         }
 
         // ==========================================
-        // 6. 메시지 렌더링 및 수식(KaTeX) 파싱
+        // 8. 메시지 렌더링 (유저, AI, 튜터 액션 버튼)
         // ==========================================
         function appendUserMessage(text, imageSrc) {
             const container = document.getElementById('chatContainer');
             const wrapper = document.createElement('div');
             wrapper.className = 'flex justify-end animate-fade-up';
 
-            let imageHtml = '';
-            if (imageSrc) {
-                imageHtml = `<img src="${imageSrc}" alt="업로드된 문제" class="w-40 sm:w-48 max-h-48 object-contain bg-black/30 rounded-2xl mb-2.5 border border-white/15">`;
-            }
+            let imageHtml = imageSrc ? `<img src="${imageSrc}" alt="업로드된 문제" class="w-40 sm:w-48 max-h-48 object-contain bg-black/30 rounded-2xl mb-2.5 border border-white/15">` : '';
 
             wrapper.innerHTML = `
-                <div class="max-w-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white rounded-3xl rounded-tr-md px-5 py-3.5 shadow-lg shadow-emerald-950/40 ring-1 ring-white/15">
+                <div class="max-w-2xl bg-gradient-to-br from-violet-600 to-purple-600 text-white rounded-3xl rounded-tr-md px-5 py-3.5 shadow-lg shadow-violet-950/40 ring-1 ring-white/15">
                     ${imageHtml}
                     <p class="text-sm sm:text-[15px] whitespace-pre-wrap leading-relaxed">${escapeHtml(text || '첨부된 사진의 문제를 풀어주세요.')}</p>
                 </div>
@@ -986,18 +1376,19 @@
             wrapper.className = 'flex items-start gap-3.5 animate-fade-up';
 
             wrapper.innerHTML = `
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shrink-0 mt-0.5 shadow-lg shadow-emerald-500/20 ring-1 ring-white/20">
-                    <svg class="w-4 h-4 text-white animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
+                <div class="relative w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-600 to-fuchsia-500 flex items-center justify-center shrink-0 mt-0.5 ring-1 ring-white/25 animate-pulse-glow">
+                    <span class="absolute inset-0 rounded-xl bg-violet-400/30 animate-ping" style="animation-duration: 2.2s;"></span>
+                    <svg class="relative w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 7V4H6l6 8-6 8h12v-3" />
                     </svg>
                 </div>
-                <div class="bg-[#0e1424]/90 backdrop-blur-xl border border-white/[0.08] rounded-3xl rounded-tl-md px-5 py-4 flex items-center gap-3 shadow-lg">
-                    <div class="flex gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style="animation-delay: 0ms"></span>
-                        <span class="w-2 h-2 rounded-full bg-teal-400 animate-bounce" style="animation-delay: 150ms"></span>
-                        <span class="w-2 h-2 rounded-full bg-emerald-300 animate-bounce" style="animation-delay: 300ms"></span>
+                <div class="bg-[#110c22]/90 backdrop-blur-xl border border-violet-500/20 rounded-3xl rounded-tl-md px-5 py-3.5 flex items-center gap-3 shadow-lg">
+                    <div class="flex items-center gap-1 h-4">
+                        <span class="w-1 h-2.5 rounded-full bg-violet-400 animate-pulse" style="animation-delay: 0ms"></span>
+                        <span class="w-1 h-4 rounded-full bg-fuchsia-400 animate-pulse" style="animation-delay: 200ms"></span>
+                        <span class="w-1 h-3 rounded-full bg-purple-300 animate-pulse" style="animation-delay: 400ms"></span>
                     </div>
-                    <span class="text-xs sm:text-sm text-slate-300 font-medium">문제를 분석하고 풀이를 작성하는 중...</span>
+                    <span class="text-xs sm:text-sm font-medium animate-shimmer-text">문제를 분석하고 풀이를 작성하는 중...</span>
                 </div>
             `;
             container.appendChild(wrapper);
@@ -1021,42 +1412,50 @@
                     return `%%%MATH_INLINE_${mathBlocks.length - 1}%%%`;
                 });
 
-            let htmlContent = marked.parse(protectedText);
-
-            htmlContent = htmlContent
+            let htmlContent = marked.parse(protectedText)
                 .replace(/%%%MATH_BLOCK_(\d+)%%%/g, (_, index) => mathBlocks[index])
                 .replace(/%%%MATH_INLINE_(\d+)%%%/g, (_, index) => mathBlocks[index]);
 
             const msgId = 'msg-' + Date.now();
+            const blurClass = isStudyMode ? 'study-blur' : '';
+
             wrapper.innerHTML = `
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shrink-0 mt-0.5 shadow-lg shadow-emerald-500/20 ring-1 ring-white/20">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-600 to-fuchsia-500 flex items-center justify-center shrink-0 mt-0.5 shadow-lg shadow-violet-500/20 ring-1 ring-white/20">
                     <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 7V4H6l6 8-6 8h12v-3" />
                     </svg>
                 </div>
-                <div class="flex-1 min-w-0 bg-[#0e1424]/90 backdrop-blur-xl border border-white/[0.08] rounded-3xl rounded-tl-md p-5 sm:p-6 shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+                <div class="flex-1 min-w-0 bg-[#110c22]/90 backdrop-blur-xl border border-white/[0.08] rounded-3xl rounded-tl-md p-5 sm:p-6 shadow-[0_8px_30px_rgba(0,0,0,0.45)]">
                     <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-white/[0.06]">
                         <div class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                            <span class="text-[11px] font-bold text-emerald-400 tracking-widest uppercase">SIGNO SOLUTION</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                            <span class="text-[11px] font-bold text-violet-400 tracking-widest uppercase">SIGNO SOLUTION</span>
                         </div>
                         <button onclick="copySolution('${msgId}')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] transition-all">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             <span>복사</span>
                         </button>
                     </div>
-                    <div id="${msgId}" class="math-content text-sm sm:text-[15px] text-slate-200 overflow-x-auto">
+                    <div id="${msgId}" onclick="this.classList.remove('study-blur')" class="math-content ${blurClass} text-sm sm:text-[15px] text-slate-200 overflow-x-auto">
                         ${htmlContent}
+                    </div>
+                    <!-- AI 튜터 후속 액션 바 -->
+                    <div class="mt-4 pt-3 border-t border-white/[0.06] flex flex-wrap gap-2">
+                        <button onclick="sendFollowUpAction('방금 푼 문제와 유형 및 난이도가 비슷한 쌍둥이 변형 문제를 1개만 새로 출제하고 정답과 해설도 함께 알려줘.')" class="px-3 py-1.5 rounded-xl bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/25 text-[11px] font-medium text-violet-300 flex items-center gap-1.5 transition-all">
+                            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                            <span>쌍둥이 변형 문제 풀기</span>
+                        </button>
+                        <button onclick="sendFollowUpAction('방금 풀이한 핵심 개념을 중학생도 한 번에 이해할 수 있도록 쉬운 비유를 들어 다시 설명해줘.')" class="px-3 py-1.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] text-[11px] font-medium text-slate-300 flex items-center gap-1.5 transition-all">
+                            <i data-lucide="lightbulb" class="w-3 h-3 text-amber-400"></i>
+                            <span>더 쉽게 설명해줘</span>
+                        </button>
                     </div>
                 </div>
             `;
 
             container.appendChild(wrapper);
             lucide.createIcons();
-
-            const contentEl = document.getElementById(msgId);
-            renderMathInContainer(contentEl);
-
+            renderMathInContainer(document.getElementById(msgId));
             scrollToBottom();
         }
 
@@ -1080,10 +1479,8 @@
 
         function copySolution(elementId) {
             const el = document.getElementById(elementId);
-            const textToCopy = el.innerText;
-            
             const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = textToCopy;
+            tempTextArea.value = el.innerText;
             document.body.appendChild(tempTextArea);
             tempTextArea.select();
             try {
@@ -1103,10 +1500,7 @@
         function scrollToBottom() {
             const scrollArea = document.getElementById('mainScrollArea');
             if (scrollArea) {
-                scrollArea.scrollTo({
-                    top: scrollArea.scrollHeight,
-                    behavior: 'smooth'
-                });
+                scrollArea.scrollTo({ top: scrollArea.scrollHeight, behavior: 'smooth' });
             }
         }
 
@@ -1120,4 +1514,4 @@
         }
     </script>
 </body>
-                              </html>
+</html>
