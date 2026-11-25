@@ -274,9 +274,10 @@
                         <span>오답노트</span>
                     </button>
                 </div>
-                <button onclick="printWrongAnswerSheet()" class="w-full py-1.5 px-3 rounded-xl bg-white/[0.04] hover:bg-violet-500/20 border border-white/[0.07] hover:border-violet-500/40 text-[11px] font-medium text-violet-300 flex items-center justify-center gap-1.5 transition-all">
+                <button onclick="requireLogin(() => printWrongAnswerSheet())" class="w-full py-1.5 px-3 rounded-xl bg-white/[0.04] hover:bg-violet-500/20 border border-white/[0.07] hover:border-violet-500/40 text-[11px] font-medium text-violet-300 flex items-center justify-center gap-1.5 transition-all">
                     <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                     <span>오답노트 시험지 PDF 인쇄</span>
+                    <i data-lucide="lock" class="w-3 h-3 text-amber-400 login-lock-icon"></i>
                 </button>
             </div>
         </div>
@@ -341,10 +342,22 @@
                         <button type="button" onclick="toggleToolsDropdown(event)" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-white/[0.05] hover:bg-white/[0.1] text-slate-200 border border-white/[0.1] transition-all">
                             <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400"></i>
                             <span>다양한 기능</span>
+                            <span id="toolsLockBadge" class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-300 text-[10px] font-bold">
+                                <i data-lucide="lock" class="w-2.5 h-2.5"></i>
+                            </span>
                             <i id="toolsChevron" data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200"></i>
                         </button>
 
                         <div id="toolsDropdownMenu" class="hidden absolute right-0 mt-2 w-60 rounded-2xl bg-[#120d24]/95 backdrop-blur-2xl border border-violet-500/25 shadow-[0_12px_40px_rgba(0,0,0,0.75)] p-1.5 z-50 animate-fade-up">
+                            <!-- 비로그인 잠금 안내 배너 -->
+                            <div id="toolsLoginNotice" onclick="closeToolsDropdown(); openAccountModal()" class="cursor-pointer mb-1.5 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between gap-2 hover:bg-amber-500/15 transition-colors">
+                                <div class="flex items-center gap-1.5 text-[11px] font-semibold text-amber-300">
+                                    <i data-lucide="lock" class="w-3.5 h-3.5 shrink-0"></i>
+                                    <span>로그인 후 모든 기능 잠금 해제</span>
+                                </div>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-amber-300 shrink-0"></i>
+                            </div>
+
                             <!-- 뽀모도로 25분 집중 타이머 -->
                             <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.05] mb-1">
                                 <div class="flex items-center gap-2">
@@ -352,57 +365,78 @@
                                     <span class="text-xs font-medium text-slate-200">집중 타이머</span>
                                 </div>
                                 <div class="flex items-center gap-1.5 font-mono text-xs">
-                                    <button type="button" onclick="event.stopPropagation(); togglePomodoro()" id="pomoToggleBtn" title="시작/일시정지" class="p-1 rounded-lg bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 transition-colors">
+                                    <button type="button" onclick="event.stopPropagation(); requireLogin(() => togglePomodoro())" id="pomoToggleBtn" title="시작/일시정지" class="p-1 rounded-lg bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 transition-colors">
                                         <i id="pomoIcon" data-lucide="play" class="w-3 h-3"></i>
                                     </button>
                                     <span id="pomoDisplay" class="font-bold tracking-wider text-violet-200">25:00</span>
-                                    <button type="button" onclick="event.stopPropagation(); resetPomodoro()" title="초기화" class="p-1 rounded-lg text-slate-400 hover:text-white transition-colors">
+                                    <button type="button" onclick="event.stopPropagation(); requireLogin(() => resetPomodoro())" title="초기화" class="p-1 rounded-lg text-slate-400 hover:text-white transition-colors">
                                         <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
                                     </button>
                                 </div>
                             </div>
 
                             <!-- 목표 시험 D-Day 설정 -->
-                            <button type="button" onclick="closeToolsDropdown(); openDdayModal()" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
+                            <button type="button" onclick="closeToolsDropdown(); requireLogin(() => openDdayModal())" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
                                 <div class="flex items-center gap-2.5">
                                     <i data-lucide="calendar-clock" class="w-4 h-4 text-fuchsia-400 shrink-0"></i>
                                     <span>목표 시험 D-Day</span>
                                 </div>
-                                <span id="headerDdayText" class="text-[11px] font-bold text-fuchsia-300 bg-fuchsia-500/15 px-2 py-0.5 rounded-md">설정</span>
+                                <div class="flex items-center gap-1">
+                                    <span id="headerDdayText" class="text-[11px] font-bold text-fuchsia-300 bg-fuchsia-500/15 px-2 py-0.5 rounded-md">설정</span>
+                                    <i data-lucide="lock" class="w-3 h-3 text-amber-400 login-lock-icon"></i>
+                                </div>
                             </button>
 
                             <div class="my-1 border-t border-white/[0.06]"></div>
 
-                            <button type="button" onclick="closeToolsDropdown(); openGraphLabModal()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
-                                <i data-lucide="line-chart" class="w-4 h-4 text-pink-400 shrink-0"></i>
-                                <div>
-                                    <p class="font-semibold text-white">함수 그래프 실험실</p>
-                                    <p class="text-[10px] text-slate-400">수식 시각화 및 개형 탐색</p>
+                            <button type="button" onclick="closeToolsDropdown(); requireLogin(() => openGraphLabModal())" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
+                                <div class="flex items-center gap-2.5">
+                                    <i data-lucide="line-chart" class="w-4 h-4 text-pink-400 shrink-0"></i>
+                                    <div>
+                                        <p class="font-semibold text-white">함수 그래프 실험실</p>
+                                        <p class="text-[10px] text-slate-400">수식 시각화 및 개형 탐색</p>
+                                    </div>
                                 </div>
+                                <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-400 shrink-0 login-lock-icon"></i>
                             </button>
-                            <button type="button" onclick="closeToolsDropdown(); openLab3DModal()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
-                                <i data-lucide="box" class="w-4 h-4 text-cyan-400 shrink-0"></i>
-                                <div>
-                                    <p class="font-semibold text-white">3D 입체 실험실</p>
-                                    <p class="text-[10px] text-slate-400">공간도형 · 분자 구조 회전</p>
+                            <button type="button" onclick="closeToolsDropdown(); requireLogin(() => openLab3DModal())" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
+                                <div class="flex items-center gap-2.5">
+                                    <i data-lucide="box" class="w-4 h-4 text-cyan-400 shrink-0"></i>
+                                    <div>
+                                        <p class="font-semibold text-white">3D 입체 실험실</p>
+                                        <p class="text-[10px] text-slate-400">공간도형 · 분자 구조 회전</p>
+                                    </div>
                                 </div>
+                                <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-400 shrink-0 login-lock-icon"></i>
                             </button>
                             <div class="my-1 border-t border-white/[0.06]"></div>
-                            <button type="button" onclick="closeToolsDropdown(); openCalcModal()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
-                                <i data-lucide="calculator" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-                                <span>공학용 수식 계산기</span>
+                            <button type="button" onclick="closeToolsDropdown(); requireLogin(() => openCalcModal())" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
+                                <div class="flex items-center gap-2.5">
+                                    <i data-lucide="calculator" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                                    <span>공학용 수식 계산기</span>
+                                </div>
+                                <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-400 shrink-0 login-lock-icon"></i>
                             </button>
-                            <button type="button" onclick="closeToolsDropdown(); openFormulaModal()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
-                                <i data-lucide="book-open" class="w-4 h-4 text-sky-400 shrink-0"></i>
-                                <span>핵심 공식 사전</span>
+                            <button type="button" onclick="closeToolsDropdown(); requireLogin(() => openFormulaModal())" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
+                                <div class="flex items-center gap-2.5">
+                                    <i data-lucide="book-open" class="w-4 h-4 text-sky-400 shrink-0"></i>
+                                    <span>핵심 공식 사전</span>
+                                </div>
+                                <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-400 shrink-0 login-lock-icon"></i>
                             </button>
-                            <button type="button" onclick="closeToolsDropdown(); toggleScratchpad()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
-                                <i data-lucide="pen-tool" class="w-4 h-4 text-fuchsia-400 shrink-0"></i>
-                                <span>손글씨 계산 연습장</span>
+                            <button type="button" onclick="closeToolsDropdown(); requireLogin(() => toggleScratchpad())" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
+                                <div class="flex items-center gap-2.5">
+                                    <i data-lucide="pen-tool" class="w-4 h-4 text-fuchsia-400 shrink-0"></i>
+                                    <span>손글씨 계산 연습장</span>
+                                </div>
+                                <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-400 shrink-0 login-lock-icon"></i>
                             </button>
-                            <button type="button" onclick="closeToolsDropdown(); openFlashcardModal()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
-                                <i data-lucide="layers" class="w-4 h-4 text-amber-400 shrink-0"></i>
-                                <span>AI 핵심 개념 암기카드</span>
+                            <button type="button" onclick="closeToolsDropdown(); requireLogin(() => openFlashcardModal())" class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition-colors text-left">
+                                <div class="flex items-center gap-2.5">
+                                    <i data-lucide="layers" class="w-4 h-4 text-amber-400 shrink-0"></i>
+                                    <span>AI 핵심 개념 암기카드</span>
+                                </div>
+                                <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-400 shrink-0 login-lock-icon"></i>
                             </button>
                         </div>
                     </div>
@@ -999,31 +1033,57 @@
             initScratchpad();
             loadFlashcards();
             updateDailyGoalUI();
+            updateFeatureLockUI();
         });
 
-        // ==========================================
-        // 2. 로그인 / 회원가입 & 클라우드 동기화
-        // ==========================================
-        function initAuthListener() {
-            if (!window.signoFirebase?.enabled) return;
-            const { auth, fns } = window.signoFirebase;
-            fns.onAuthStateChanged(auth, (user) => {
-                currentUser = user;
-                if (user) {
-                    userProfile.nickname = user.displayName || user.email?.split('@')[0] || '학생';
-                    updateProfileUI();
-                    subscribeCloudSessions(user.uid);
-                } else {
-                    if (unsubscribeFirestore) {
-                        unsubscribeFirestore();
-                        unsubscribeFirestore = null;
-                    }
-                    loadProfileFromStorage();
-                    loadSessionsFromStorage();
-                    renderChatList();
-                }
-                updateAccountModalUI();
+        function requireLogin(actionFn) {
+            if (!currentUser) {
+                showToast('로그인 후 이용 가능한 기능입니다. 로그인해 주세요!', 'info');
+                openAccountModal();
+                return;
+            }
+            if (typeof actionFn === 'function') actionFn();
+        }
+
+        function updateFeatureLockUI() {
+            const isLoggedIn = Boolean(currentUser);
+            const lockBadge = document.getElementById('toolsLockBadge');
+            const loginNotice = document.getElementById('toolsLoginNotice');
+            if (lockBadge) lockBadge.classList.toggle('hidden', isLoggedIn);
+            if (loginNotice) loginNotice.classList.toggle('hidden', isLoggedIn);
+            document.querySelectorAll('.login-lock-icon').forEach(el => {
+                el.classList.toggle('hidden', isLoggedIn);
             });
+        }
+
+        function initAuthListener() {
+            try {
+                const fb = window.signoFirebase;
+                if (fb && fb.enabled && fb.auth && fb.fns && typeof fb.fns.onAuthStateChanged === 'function') {
+                    fb.fns.onAuthStateChanged(fb.auth, (user) => {
+                        if (user) {
+                            currentUser = {
+                                uid: user.uid,
+                                email: user.email || user.displayName || '로그인된 계정',
+                                displayName: user.displayName || userProfile.nickname || '학습자'
+                            };
+                            if (user.displayName) {
+                                userProfile.nickname = user.displayName;
+                                localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
+                            }
+                            updateProfileUI();
+                            updateAccountModalUI();
+                            updateFeatureLockUI();
+                            subscribeCloudSessions(user.uid);
+                        } else if (unsubscribeFirestore) {
+                            unsubscribeFirestore();
+                            unsubscribeFirestore = null;
+                        }
+                    });
+                }
+            } catch (err) {
+                console.warn('인증 리스너 초기화 중 경고:', err);
+            }
         }
 
         function subscribeCloudSessions(uid) {
@@ -1197,8 +1257,9 @@
                 localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
                 updateProfileUI();
                 updateAccountModalUI();
+                updateFeatureLockUI();
                 document.getElementById('authPasswordInput').value = '';
-                showToast('회원가입이 완료되었습니다!', 'success');
+                showToast('회원가입이 완료되었습니다! 모든 기능이 잠금 해제되었습니다.', 'success');
             } else {
                 const userRecord = localUsers[userId];
                 const inputHash = btoa(unescape(encodeURIComponent(password)));
@@ -1211,8 +1272,9 @@
                 localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
                 updateProfileUI();
                 updateAccountModalUI();
+                updateFeatureLockUI();
                 document.getElementById('authPasswordInput').value = '';
-                showToast('로그인되었습니다.', 'success');
+                showToast('로그인되었습니다! 모든 기능이 잠금 해제되었습니다.', 'success');
             }
         }
 
@@ -1226,6 +1288,7 @@
             localStorage.setItem('signo_user_profile', JSON.stringify(userProfile));
             updateProfileUI();
             updateAccountModalUI();
+            updateFeatureLockUI();
             showToast('로그아웃되었습니다.', 'info');
         }
 
